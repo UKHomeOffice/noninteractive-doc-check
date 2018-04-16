@@ -29,9 +29,8 @@ pipeline:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
       - docker login -u="ukhomeofficedigital+dp_non_iapi" -p=$${DOCKER_PASSWORD} quay.io
-      - docker tag dp-noninteractive-doc-check:$${DRONE_BUILD_NUMBER} quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:latest
+      - docker tag dp-noninteractive-doc-check:$${DRONE_BUILD_NUMBER} quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:$${DRONE_BUILD_NUMBER}
       - docker push quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:$${DRONE_BUILD_NUMBER}
-      - docker push quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:latest
     when:
       branch: master
       event: push
