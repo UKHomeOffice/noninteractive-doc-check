@@ -1,0 +1,9 @@
+---
+pipeline:
+  build:
+    image: quay.io/ukhomeofficedigital/java8-mvn:v3.5.2.1
+    commands:
+      - "/root/entrypoint.sh 'mvn clean install'"
+    when:
+      event:
+        - push
