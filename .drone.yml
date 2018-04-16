@@ -8,5 +8,30 @@ pipeline:
       - artifactory_username
       - artifactory_password
     when:
+      branch: master
       event:
         - push
+  build-docker:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker build -t dp-noninteractive-doc-check:$${DRONE_BUILD_NUMBER} .
+    when:
+      branch: master
+      event:
+        - push
+  publish:
+    image: docker:17.09.1
+    secrets:
+      - docker_password
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+dp_non_iapi" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag dp-noninteractive-doc-check:$${DRONE_BUILD_NUMBER} quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:latest
+      - docker push quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:$${DRONE_BUILD_NUMBER}
+      - docker push quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:latest
+    when:
+      branch: master
+      event: push
