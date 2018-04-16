@@ -4,6 +4,9 @@ pipeline:
     image: quay.io/ukhomeofficedigital/java8-mvn:v3.5.2.1
     commands:
       - "mvn clean install"
+    secrets:
+      - artifactory_username
+      - artifactory_password
     when:
       event:
         - push
