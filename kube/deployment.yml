@@ -36,6 +36,7 @@ spec:
         securityContext:
           runAsNonRoot: true
         args:
+        - --certs=/certs
         - --domain=dp-noninteractive-doc-check.${KUBE_NAMESPACE}.svc.cluster.local
         - --expiry=8760h
         env:
