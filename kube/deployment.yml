@@ -15,7 +15,7 @@ spec:
         fsGroup: 5002
       containers:
       - name: dp-noninteractive-doc-check
-        image: quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:8
+        image: quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:{{.BUILD_NUMBER}}
         ports:
           - containerPort: 8080
         securityContext:
