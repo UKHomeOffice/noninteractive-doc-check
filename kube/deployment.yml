@@ -24,7 +24,7 @@ spec:
           - name: JAVA_OPTS
             value: "-Xms256m -Xmx512m"
         volumeMounts:
-        - name: certs
+        - name: keystore
           mountPath: /etc/keystore
         resources:
           requests:
@@ -46,6 +46,8 @@ spec:
               fieldPath: metadata.namespace
         volumeMounts:
         - name: certs
+          mountPath: /certs
+        - name: keystore
           mountPath: /etc/keystore
         - name: bundle
           mountPath: /etc/ssl/certs
@@ -54,5 +56,7 @@ spec:
       - name: bundle
         configMap:
           name: bundle
+      - name: keystore
+        emptyDir: {}
       - name: certs
         emptyDir: {}
