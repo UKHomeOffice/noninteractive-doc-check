@@ -1,0 +1,22 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dp-noninteractive-doc-check
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: dp-noninteractive-doc-check
+    spec:
+      securityContext:
+        runAsUser: 5002
+        fsGroup: 5002
+      containers:
+      - name: dp-noninteractive-doc-check
+        image: quay.io/ukhomeofficedigital/dp-noninteractive-doc-check:8
+        ports:
+          - containerPort: 8080
+        securityContext:
+          runAsNonRoot: true

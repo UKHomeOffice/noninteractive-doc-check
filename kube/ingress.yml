@@ -1,0 +1,25 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dp-noninteractive-doc-check
+  annotations:
+    kubernetes.io/ingress.class: "nginx-external"
+    stable.k8s.psg.io/kcm.provider: http
+    #ingress.kubernetes.io/secure-backends: "true"
+    ingress.kubernetes.io/whitelist-source-range: "81.2.119.240/28,213.251.23.160/27,52.209.169.111/32,34.250.209.114/32,52.209.155.213/32"
+  labels:
+    stable.k8s.psg.io/kcm.class: default
+spec:
+  rules:
+  - host: "noninteractive.notprod.carriersurvey.homeoffice.gov.uk"
+    http:
+      paths:
+      - backend:
+          serviceName: dp-noninteractive-doc-check
+          servicePort: 8080
+        path: /
+  tls:
+  - hosts:
+    - "noninteractive.notprod.carriersurvey.homeoffice.gov.uk"
+    secretName: dp-noninteractive-doc-check
