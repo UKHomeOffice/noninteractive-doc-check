@@ -38,7 +38,7 @@ pipeline:
     image: quay.io/ukhomeofficedigital/kd:v0.11.0
     environment:
       - KUBE_NAMESPACE=dig-perms-dev
-      - BUILD_NUMBER=$${DRONE_BUILD_NUMBER}
+      - BUILD_NUMBER=${DRONE_BUILD_NUMBER}
     secrets:
       - kube_server
       - kube_token
