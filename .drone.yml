@@ -43,7 +43,7 @@ pipeline:
       - kube_server
       - kube_token
     commands:
-      - kd -f kube/deployment.yml -f kube/service.yml -f kube/ingress.yml -f kube/network-policy.yml
+      - kd --certificate-authority=etc/acp-notprod-ca.crt -f kube/deployment.yml -f kube/service.yml -f kube/ingress.yml -f kube/network-policy.yml
     when:
       branch: master
       event: push
