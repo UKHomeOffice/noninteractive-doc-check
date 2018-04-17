@@ -39,6 +39,7 @@ spec:
         - --certs=/certs
         - --domain=dp-noninteractive-doc-check.${KUBE_NAMESPACE}.svc.cluster.local
         - --expiry=8760h
+        - --command='create-keystore.sh /certs/tls.pem /certs/tls-key.pem'
         env:
         - name: KUBE_NAMESPACE
           valueFrom:
