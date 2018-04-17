@@ -23,8 +23,35 @@ spec:
         env:
           - name: JAVA_OPTS
             value: "-Xms256m -Xmx512m"
+        volumeMounts:
+        - name: certs
+          mountPath: /etc/keystore
         resources:
           requests:
             memory: "512Mi"
           limits:
             memory: "768Mi"
+      - name: cfssl
+        image: quay.io/ukhomeofficedigital/cfssl-sidekick-jks:latest
+        securityContext:
+          runAsNonRoot: true
+        args:
+        - --domain=dp-noninteractive-doc-check.${KUBE_NAMESPACE}.svc.cluster.local
+        - --expiry=8760h
+        env:
+        - name: KUBE_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: certs
+          mountPath: /etc/keystore
+        - name: bundle
+          mountPath: /etc/ssl/certs
+          readOnly: true
+      volumes:
+      - name: bundle
+        configMap:
+          name: bundle
+      - name: certs
+        emptyDir: {}
