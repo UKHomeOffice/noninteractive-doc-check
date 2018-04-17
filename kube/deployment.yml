@@ -20,3 +20,11 @@ spec:
           - containerPort: 8080
         securityContext:
           runAsNonRoot: true
+        env:
+          - name: JAVA_OPTS
+            value: "-Xms256m -Xmx512m"
+        resources:
+          requests:
+            memory: "512Mi"
+          limits:
+            memory: "768Mi"
