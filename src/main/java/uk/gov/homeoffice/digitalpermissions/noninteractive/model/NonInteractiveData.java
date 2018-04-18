@@ -1,6 +1,7 @@
 package uk.gov.homeoffice.digitalpermissions.noninteractive.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,9 +12,10 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 public class NonInteractiveData {
     private String messageSequenceId;
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
+    @JsonProperty(required = true)
     private Date messageReceived;
 
-    private ServiceInformation service;
+    private ServiceInformation service = new ServiceInformation();
     private List<Passenger> passengers = new ArrayList<>();
 
     public List<Passenger> getPassengers() {

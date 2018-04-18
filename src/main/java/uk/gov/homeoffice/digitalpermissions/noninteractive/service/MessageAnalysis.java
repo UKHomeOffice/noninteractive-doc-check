@@ -1,8 +1,10 @@
 package uk.gov.homeoffice.digitalpermissions.noninteractive.service;
 
+import org.springframework.stereotype.Component;
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.MessageStats;
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.NonInteractiveData;
 
+@Component
 public class MessageAnalysis {
     public MessageStats analyse(final NonInteractiveData message) {
         return new MessageStats(message.getMessageSequenceId(),
