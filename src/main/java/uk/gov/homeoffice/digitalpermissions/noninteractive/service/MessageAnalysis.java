@@ -5,7 +5,8 @@ import uk.gov.homeoffice.digitalpermissions.noninteractive.model.NonInteractiveD
 
 public class MessageAnalysis {
     public MessageStats analyse(final NonInteractiveData message) {
-        return new MessageStats(message.getService().getCarrier(),
+        return new MessageStats(message.getMessageSequenceId(),
+                                message.getService().getCarrier(),
                                 message.getService().getRoute(),
                                 minutesBeforeSTD(message),
                                 message.getPassengers().size());

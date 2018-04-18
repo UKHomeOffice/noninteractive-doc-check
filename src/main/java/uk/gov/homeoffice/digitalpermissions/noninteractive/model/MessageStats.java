@@ -3,12 +3,18 @@ package uk.gov.homeoffice.digitalpermissions.noninteractive.model;
 import java.util.Optional;
 
 public class MessageStats {
+    private final String sequenceId;
     private final String carrier;
     private final String route;
     private final Long minutesBeforeSTD;
     private final int passengerCount;
 
-    public MessageStats(String carrier, String route, Long minutesBeforeSTD, int passengerCount) {
+    public MessageStats(String sequenceId,
+                        String carrier,
+                        String route,
+                        Long minutesBeforeSTD,
+                        int passengerCount) {
+        this.sequenceId = sequenceId;
         this.carrier = carrier;
         this.route = route;
         this.minutesBeforeSTD = minutesBeforeSTD;
@@ -32,9 +38,10 @@ public class MessageStats {
     }
 
     public String toLogLine() {
-        return "carrier='" + carrier + "'" +
+        return "sequenceId='" + sequenceId + "'" +
+               " carrier='" + carrier + "'" +
                " route='" + route + "'" +
-               getMinutesBeforeSTD().map(l ->" minutesBeforeSTD=" + l).orElse("") +
+               getMinutesBeforeSTD().map(l -> " minutesBeforeSTD=" + l).orElse("") +
                " passengerCount=" + passengerCount;
     }
 }

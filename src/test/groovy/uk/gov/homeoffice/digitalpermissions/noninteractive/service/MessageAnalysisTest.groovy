@@ -19,7 +19,7 @@ class MessageAnalysisTest extends Specification {
             stats.route == "G432"
             stats.passengerCount == 12
             stats.minutesBeforeSTD.get() == 20
-            stats.toLogLine() == "carrier='Home Office Seaways' route='G432' minutesBeforeSTD=20 passengerCount=12"
+            stats.toLogLine() == "sequenceId='0001' carrier='Home Office Seaways' route='G432' minutesBeforeSTD=20 passengerCount=12"
     }
 
     def "Should return statistics message received after departure"() {
@@ -32,7 +32,7 @@ class MessageAnalysisTest extends Specification {
             stats.route == "G432"
             stats.passengerCount == 12
             stats.minutesBeforeSTD.get() == -35
-            stats.toLogLine() == "carrier='Home Office Seaways' route='G432' minutesBeforeSTD=-35 passengerCount=12"
+            stats.toLogLine() == "sequenceId='0001' carrier='Home Office Seaways' route='G432' minutesBeforeSTD=-35 passengerCount=12"
     }
 
     def "Should return statistics for no passengers"() {
@@ -42,7 +42,7 @@ class MessageAnalysisTest extends Specification {
             def stats = analysis.analyse(data)
         then:
             stats.passengerCount == 0
-            stats.toLogLine() == "carrier='Home Office Seaways' route='G432' minutesBeforeSTD=-35 passengerCount=0"
+            stats.toLogLine() == "sequenceId='0001' carrier='Home Office Seaways' route='G432' minutesBeforeSTD=-35 passengerCount=0"
     }
 
     def "Should return statistics if STD is missing"() {
@@ -53,12 +53,13 @@ class MessageAnalysisTest extends Specification {
             def stats = analysis.analyse(data)
         then:
             !stats.minutesBeforeSTD.isPresent()
-            stats.toLogLine() == "carrier='Home Office Seaways' route='G432' passengerCount=10"
+            stats.toLogLine() == "sequenceId='0001' carrier='Home Office Seaways' route='G432' passengerCount=10"
     }
 
     def generateData(int passengers, int minutesBefore) {
         def data = new NonInteractiveData()
         data.messageReceived = new Date()
+        data.messageSequenceId = "0001"
         def service = new ServiceInformation()
         service.carrier = "Home Office Seaways"
         service.route = "G432"
