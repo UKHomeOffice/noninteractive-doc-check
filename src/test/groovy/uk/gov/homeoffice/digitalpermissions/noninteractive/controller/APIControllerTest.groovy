@@ -1,5 +1,9 @@
 package uk.gov.homeoffice.digitalpermissions.noninteractive.controller
 
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
@@ -8,6 +12,7 @@ import spock.lang.Specification
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.NonInteractiveData
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.Passenger
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.ServiceInformation
+import uk.gov.homeoffice.digitalpermissions.noninteractive.service.StatsLoggingService
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 
@@ -20,14 +25,27 @@ class APIControllerTest extends Specification {
     @Autowired
     TestRestTemplate restTemplate
 
+    def appender = new ListAppender<ILoggingEvent>()
+    def logger = (Logger) LoggerFactory.getLogger(StatsLoggingService)
+
+    void setup() {
+        appender.setContext(LoggerFactory.getILoggerFactory())
+        appender.start()
+        logger.addAppender(appender)
+    }
+
+    void cleanup() {
+        logger.detachAppender(appender)
+    }
 
     def "Should return ACCEPTED response"() {
         when:
-            def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", generateData(), Map.class)
+            def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", generateData(), Map)
         then:
             response.statusCodeValue == 202
             response.body.status == 'ACCEPTED'
             response.body.timestamp
+            appender.list.size() == 1
     }
 
     def "Should return ACCEPTED response with no STD"() {
@@ -35,11 +53,12 @@ class APIControllerTest extends Specification {
             def data = generateData()
             data.service.scheduledDepartureTime = null
         when:
-            def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", data, Map.class)
+            def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", data, Map)
         then:
             response.statusCodeValue == 202
             response.body.status == 'ACCEPTED'
             response.body.timestamp
+            appender.list.size() == 1
     }
 
     def "Should return ACCEPTED response with no passengers"() {
@@ -47,11 +66,12 @@ class APIControllerTest extends Specification {
             def data = generateData()
             data.passengers = null
         when:
-            def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", data, Map.class)
+            def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", data, Map)
         then:
             response.statusCodeValue == 202
             response.body.status == 'ACCEPTED'
             response.body.timestamp
+            appender.list.size() == 1
     }
 
     def "Should return ACCEPTED response with no messageSequenceId"() {
@@ -59,11 +79,12 @@ class APIControllerTest extends Specification {
             def data = generateData()
             data.messageSequenceId = null
         when:
-            def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", data, Map.class)
+            def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", data, Map)
         then:
             response.statusCodeValue == 202
             response.body.status == 'ACCEPTED'
             response.body.timestamp
+            appender.list.size() == 1
     }
 
     def "Should return ACCEPTED response with no carrier"() {
@@ -76,6 +97,7 @@ class APIControllerTest extends Specification {
             response.statusCodeValue == 202
             response.body.status == 'ACCEPTED'
             response.body.timestamp
+            appender.list.size() == 1
     }
 
     def "Should return ACCEPTED response with no route"() {
@@ -88,6 +110,7 @@ class APIControllerTest extends Specification {
             response.statusCodeValue == 202
             response.body.status == 'ACCEPTED'
             response.body.timestamp
+            appender.list.size() == 1
     }
 
     def "Should return BAD_REQUEST response if no messageReceived"() {
@@ -98,7 +121,9 @@ class APIControllerTest extends Specification {
             def response = restTemplate.postForEntity("http://localhost:${port}/non-interactive", data, Map.class)
         then:
             response.statusCodeValue == 400
+            appender.list.size() == 0
     }
+
 
     def generateData() {
         def data = new NonInteractiveData()

@@ -23,7 +23,11 @@ public class NonInteractiveData {
     }
 
     public void setPassengers(List<Passenger> passengers) {
-        this.passengers = passengers;
+        if (passengers == null) {
+            this.passengers = new ArrayList<>();
+        } else {
+            this.passengers = passengers;
+        }
     }
 
     public ServiceInformation getService() {

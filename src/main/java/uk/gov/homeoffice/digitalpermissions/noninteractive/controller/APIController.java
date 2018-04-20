@@ -10,6 +10,7 @@ import uk.gov.homeoffice.digitalpermissions.noninteractive.model.MessageStats;
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.NonInteractiveData;
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.NonInteractiveResponse;
 import uk.gov.homeoffice.digitalpermissions.noninteractive.service.MessageAnalysis;
+import uk.gov.homeoffice.digitalpermissions.noninteractive.service.StatsLoggingService;
 
 import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -20,9 +21,11 @@ public class APIController {
     private static final Logger LOGGER = LoggerFactory.getLogger(APIController.class);
 
     private final MessageAnalysis analysis;
+    private final StatsLoggingService service;
 
-    public APIController(MessageAnalysis analysis) {
+    public APIController(MessageAnalysis analysis, StatsLoggingService service) {
         this.analysis = analysis;
+        this.service = service;
     }
 
     @RequestMapping(path = "/non-interactive", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
@@ -33,7 +36,7 @@ public class APIController {
         }
         try {
             final MessageStats stats = analysis.analyse(data);
-            LOGGER.info(stats.toLogLine());
+            service.logMessageStats(stats);
         } catch (RuntimeException e) {
             LOGGER.warn("Unable to calculate statistics for API message sequenceId '{}': '{}'", data.getMessageSequenceId(), e.getMessage(), e);
         }
@@ -42,7 +45,7 @@ public class APIController {
 
     @ResponseStatus(BAD_REQUEST)
     private final class MissingFieldException extends RuntimeException {
-        public MissingFieldException(String message) {
+        MissingFieldException(String message) {
             super("The field '" + message + "' was missing.");
         }
     }
