@@ -1,0 +1,47 @@
+{
+  "messageSequenceId": "AB12320180322",
+  "messageReceived": "2018-04-23T12:30:00Z",
+  "service": {
+    "carrier": "AB",
+    "route": "123",
+    "lastPortOfCall": "CPT",
+    "portOfArrival": "LGW",
+    "scheduledDepartureTime": "2018-04-23T13:00:00Z",
+    "scheduledArrivalTime": "2018-04-24T01:00:00Z"
+  },
+  "passengers": [
+    {
+      "pnr": "PNR123456",
+      "upr": "UPR123456",
+      "firstName": "Jane",
+      "middleNames": "Esmaralda",
+      "lastName": "Dough",
+      "dob": "1981-03-22",
+      "gender": "F",
+      "nationality": "GBR",
+      "pti": "PL",
+      "primaryDoc": {
+        "number": "ABC123456",
+        "issuingState": "GBR",
+        "expiryDate": "2020-06-14",
+        "doctype": "P"
+      }
+    },
+    {
+      "pnr": "PNR123457",
+      "upr": "UPR123457",
+      "firstName": "Joe",
+      "lastName": "Bloggs",
+      "dob": "1981-12-01",
+      "gender": "M",
+      "nationality": "ZAF",
+      "pti": "PL",
+      "primaryDoc": {
+        "number": "ABC123456",
+        "issuingState": "ZAF",
+        "expiryDate": "2020-06-14",
+        "doctype": "P"
+      }
+    }
+  ]
+}
