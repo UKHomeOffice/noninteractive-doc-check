@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.MessageStats;
 import uk.gov.homeoffice.digitalpermissions.noninteractive.model.SummaryStats;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -15,6 +16,8 @@ public interface StatsRepository extends JpaRepository<MessageStats, Long> {
             "  count(m) as messageCount," +
             "  avg(m.passengerCount) as passengerCount," +
             "  avg(m.minutesBeforeSTD) as minutesBeforeSTD " +
-            "FROM MessageStats m GROUP BY m.carrier")
-    List<SummaryStats> getSummaryStats();
+            "FROM MessageStats m " +
+            "WHERE m.receivedDate BETWEEN ?1 AND ?2 " +
+            "GROUP BY m.carrier")
+    List<SummaryStats> getSummaryStats(Date start, Date end);
 }
