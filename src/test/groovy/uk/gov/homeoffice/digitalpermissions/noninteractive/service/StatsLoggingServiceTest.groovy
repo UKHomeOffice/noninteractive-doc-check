@@ -20,7 +20,7 @@ class StatsLoggingServiceTest extends Specification {
 
     def "Should persist to database"() {
         given:
-            def stats = new MessageStats("1234", "Flyways", "543", 12, 0)
+            def stats = new MessageStats("1234", "Flyways", "543", 12, 0, new Date())
 
         when:
             service.logMessageStats(stats)
@@ -31,12 +31,13 @@ class StatsLoggingServiceTest extends Specification {
             saved.passengerCount == stats.passengerCount
             saved.minutesBeforeSTD == stats.minutesBeforeSTD
             saved.sequenceId == stats.sequenceId
+            saved.receivedDate == stats.receivedDate
             saved.statsId
     }
 
     def "Should persist to database with no minutes before STD"() {
         given:
-            def stats = new MessageStats("1234", "Flyways", "543", null, 0)
+            def stats = new MessageStats("1234", "Flyways", "543", null, 0, new Date())
 
         when:
             service.logMessageStats(stats)
@@ -47,6 +48,7 @@ class StatsLoggingServiceTest extends Specification {
             saved.passengerCount == stats.passengerCount
             !saved.minutesBeforeSTD.isPresent()
             saved.sequenceId == stats.sequenceId
+            saved.receivedDate == stats.receivedDate
             saved.statsId
     }
 }

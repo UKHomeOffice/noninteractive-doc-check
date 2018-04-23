@@ -13,9 +13,9 @@ class StatsRepositoryTest extends Specification {
 
     def "Should return summary statistics"() {
         given:
-            statsRepository.save(new MessageStats("12", "Carrier1", "route", 23, 12))
-            statsRepository.save(new MessageStats("12", "Carrier2", "route", 34, 34))
-            statsRepository.save(new MessageStats("12", "Carrier2", "route", 36, 30))
+            statsRepository.save(new MessageStats("12", "Carrier1", "route", 23, 12, new Date()))
+            statsRepository.save(new MessageStats("12", "Carrier2", "route", 34, 34, new Date()))
+            statsRepository.save(new MessageStats("12", "Carrier2", "route", 36, 30, new Date()))
 
         when:
             def stats = statsRepository.getSummaryStats()

@@ -1,6 +1,7 @@
 package uk.gov.homeoffice.digitalpermissions.noninteractive.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Optional;
 
 @Entity
@@ -14,21 +15,24 @@ public class MessageStats {
     private final String route;
     private final Long minutesBeforeSTD;
     private final int passengerCount;
+    private final Date receivedDate;
 
     MessageStats() {
-        this(null, null, null, null, 0);
+        this(null, null, null, null, 0, null);
     }
 
     public MessageStats(String sequenceId,
                         String carrier,
                         String route,
                         Long minutesBeforeSTD,
-                        int passengerCount) {
+                        int passengerCount,
+                        Date receivedDate) {
         this.sequenceId = sequenceId;
         this.carrier = carrier;
         this.route = route;
         this.minutesBeforeSTD = minutesBeforeSTD;
         this.passengerCount = passengerCount;
+        this.receivedDate = receivedDate;
     }
 
     public Long getStatsId() {
@@ -53,6 +57,10 @@ public class MessageStats {
 
     public int getPassengerCount() {
         return passengerCount;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
     }
 
     public String toLogLine() {

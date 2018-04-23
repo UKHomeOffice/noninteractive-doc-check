@@ -11,7 +11,8 @@ public class MessageAnalysis {
                                 message.getService().getCarrier(),
                                 message.getService().getRoute(),
                                 minutesBeforeSTD(message),
-                                message.getPassengers().size());
+                                message.getPassengers().size(),
+                                message.getMessageReceived());
 
     }
 
