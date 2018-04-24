@@ -14,24 +14,39 @@
     <span th:text="${errorMessage}"/>
 </div>
 <div class="container-fluid">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th class="text-left">Carrier</th>
-            <th>Messages</th>
-            <th>Average Passengers</th>
-            <th>Received before STD</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="carrier: ${carrierStats}">
-            <th class="text-left" th:text="${carrier.carrier}">Carrier 1</th>
-            <td class="text-right" th:text="${carrier.messageCount}">12</td>
-            <td class="text-right" th:text="${carrier.passengerCount}">7</td>
-            <td class="text-right" th:text="${carrier.minutesBeforeSTD}">54</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <form th:action="@{/stats}">
+            <div class="form-group">
+                <label for="from">From: </label>
+                <input type="text" class="form-control" id="from" placeholder="yyyy-mm-dd" name="from"/>
+            </div>
+            <div class="form-group">
+                <label for="to">To: </label>
+                <input type="text" class="form-control" id="to" placeholder="yyyy-mm-dd" name="to"/>
+            </div>
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+    </div>
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-left">Carrier</th>
+                <th>Messages</th>
+                <th>Average Passengers</th>
+                <th>Received before STD</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="carrier: ${carrierStats}">
+                <th class="text-left" th:text="${carrier.carrier}">Carrier 1</th>
+                <td class="text-right" th:text="${carrier.messageCount}">12</td>
+                <td class="text-right" th:text="${carrier.passengerCount}">7</td>
+                <td class="text-right" th:text="${carrier.minutesBeforeSTD}">54</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
